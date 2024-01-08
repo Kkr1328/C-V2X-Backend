@@ -69,11 +69,13 @@ module.exports = router;
  *                 - id: "5fe5b4a27f6e4f001f4fcf79"
  *                   status: "pending"
  *                   car_name: "Car1"
+ *                   car_id: "32e5b4a23f1e4f001f4fcf79"
  *                   driver_phone_no: "123-456-7890"
  *                   time: "03:30 pm"
  *                 - id: "5fe5b4a27f6e4f001f4fcf83"
  *                   status: "pending"
  *                   car_name: "Car2"
+ *                   car_id: "32e5b4a23f1e4f001f4fcd23"
  *                   driver_phone_no: ""
  *                   time: "08:45 am"
  *       '400':

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { publishToQueue } = require('../utils/rabbitMQConnection');
 const Emergency = require('../models/Emergency');
 const Car = require('../models/Car');
 const { emergencyRegex } = require('../utils/regex');
@@ -39,6 +40,7 @@ exports.getEmergencies = async (req, res, next) => {
 					_id: 0,
 					id: '$_id',
 					status: 1,
+					car_id: '$car_info._id',
 					car_name: '$car_info.name',
 					driver_phone_no: {
 						$ifNull: ['$driver_info.phone_no', ''],
@@ -118,6 +120,8 @@ exports.createEmergency = async (req, res, next) => {
 		}
 
 		const emergency = await Emergency.create(req.body);
+		await publishToQueue('emergency', 'Emergency created');
+
 		return res.status(201).json({
 			success: true,
 			data: {
@@ -187,7 +191,7 @@ exports.updateEmergency = async (req, res, next) => {
 				.status(404)
 				.json({ success: false, error: 'The emergency not found' });
 		}
-
+		await publishToQueue('emergency', 'Emergency edited');
 		return res.status(200).json({
 			success: true,
 			data: {
